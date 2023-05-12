@@ -10,6 +10,7 @@ import com.google.gson.Gson;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +32,7 @@ public class Migrate {
                 byte[] key = iterator.key();
                 byte[] value = iterator.value();
                 try {
-                    GenericKeyValue keyValue = new GenericKeyValue(new String(key), new String(value));
+                    GenericKeyValue keyValue = new GenericKeyValue(new String(key, StandardCharsets.UTF_8), new String(value, StandardCharsets.UTF_8));
                     values.add(keyValue);
                     Log.d("MigrateLevelDB", "Adding  keyvalue json=> " + gson.toJson(keyValue));
 
