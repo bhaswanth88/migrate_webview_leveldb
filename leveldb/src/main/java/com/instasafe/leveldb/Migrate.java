@@ -10,7 +10,6 @@ import com.google.gson.Gson;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +33,7 @@ public class Migrate {
                 try {
                     GenericKeyValue keyValue = new GenericKeyValue(new String(key), new String(value));
                     values.add(keyValue);
-                    Log.d("MigrateLevelDB", "Adding  keyvalue json=> " + gson.toJson(key));
+                    Log.d("MigrateLevelDB", "Adding  keyvalue json=> " + gson.toJson(keyValue));
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -55,7 +54,14 @@ public class Migrate {
 
     public static void writeToFile(String folderPath, List<GenericKeyValue> list) {
         try {
-            gson.toJson(list, new FileWriter((folderPath.endsWith("/") ? folderPath + "leveldb.data" : folderPath + "/" + "leveldb.data")));
+            String jsonString = gson.toJson(list);
+            Log.d("MigrateLevelDB", "Got JsonString of whole file as =>" + jsonString);
+
+            FileWriter writer = new FileWriter((folderPath.endsWith("/") ? folderPath + "leveldb.data" : folderPath + "/" + "leveldb.data"));
+            writer.write(jsonString);
+            writer.flush();
+            writer.close();
+            Log.d("MigrateLevelDB", "Wrote JsonString to whole file");
             createCompletedFile(folderPath);
         } catch (Exception e) {
             e.printStackTrace();
