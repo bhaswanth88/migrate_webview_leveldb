@@ -34,6 +34,8 @@ public class Migrate {
                 try {
                     GenericKeyValue keyValue = new GenericKeyValue(new String(key, StandardCharsets.UTF_8), new String(value, StandardCharsets.UTF_8));
                     values.add(keyValue);
+                    Log.d("MigrateLevelDB", "Adding  keyvalue json=> " + gson.toJson(key));
+
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e("MigrateLevelDB", "Ignored Exception=> " + e.getMessage(), e);
