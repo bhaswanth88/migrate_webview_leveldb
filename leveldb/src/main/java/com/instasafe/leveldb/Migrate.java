@@ -56,7 +56,9 @@ public class Migrate {
                     if (keyString.contains("insta_")) {
                         keyString = keyString.substring(keyString.indexOf("insta"));
                         keyString = StringEscapeUtils.unescapeJava(keyString);
+                        keyString = keyString.replace("\\u0001", "").replace("\u0001", "");
                         valueString = StringEscapeUtils.unescapeJava(valueString);
+                        valueString = valueString.replace("\\u0001", "").replace("\u0001", "");
 
                         GenericKeyValue keyValue = new GenericKeyValue(keyString, valueString);
                         values.add(keyValue);
