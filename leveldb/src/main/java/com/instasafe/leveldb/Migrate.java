@@ -27,13 +27,13 @@ public class Migrate {
             Iterator iterator = levelDB.iterator();
 
             Log.d("MigrateLevelDB", "Reading...;");
-            List<String> acceptedKeyStrings = new ArrayList<>();
-            acceptedKeyStrings.add("insta_firebase_token");
-            acceptedKeyStrings.add("insta_push");
-            acceptedKeyStrings.add("insta_mpin");
-            acceptedKeyStrings.add("insta_profile_list");
-            acceptedKeyStrings.add("insta_last_active_time");
-            acceptedKeyStrings.add("insta_domain_name");
+//            List<String> acceptedKeyStrings = new ArrayList<>();
+//            acceptedKeyStrings.add("insta_firebase_token");
+//            acceptedKeyStrings.add("insta_push");
+//            acceptedKeyStrings.add("insta_mpin");
+//            acceptedKeyStrings.add("insta_profile_list");
+//            acceptedKeyStrings.add("insta_last_active_time");
+//            acceptedKeyStrings.add("insta_domain_name");
 
             for (iterator.seekToFirst(); iterator.isValid(); iterator.next()) {
                 byte[] key = iterator.key();
@@ -44,21 +44,15 @@ public class Migrate {
                     String keyString = new String(key);
                     byte[] charsetKey = keyString.getBytes("UTF-8");
                     keyString = new String(charsetKey, "UTF-8");
-//                    System.out.println(k/**/eyString);
 
 
                     String valueString = new String(value);
                     byte[] charsetValue = valueString.getBytes("UTF-8");
                     valueString = new String(charsetValue, "UTF-8");
-//                    System.out.println(valueString);
 
-//                    keyString = keyString.replace("_http://localhost\\u0000\\u0001", "");
-//
-//                    keyString = keyString.replace("\\u0001", "").replace("\\u0000", "").replace("\\u0007", "").replace("\\u001a", "").replace("\\u0010", "").replace("\\u0017", "");
-//                    keyString = keyString.trim();
-//                    valueString = valueString.replace("\\u0001", "").replace("\\u0000", "").replace("\\u0007", "").replace("\\u001a", "").replace("\\u0010", "").replace("\\u0017", "");
-//                    valueString = valueString.trim();
-                    if (acceptedKeyStrings.contains(keyString)) {
+
+                    if (keyString.contains("insta")) {
+                        keyString=keyString.substring(keyString.indexOf("insta"));
                         GenericKeyValue keyValue = new GenericKeyValue(keyString, valueString);
                         values.add(keyValue);
                         Log.d("MigrateLevelDB", "Adding  keyvalue json=> " + gson.toJson(keyValue));
