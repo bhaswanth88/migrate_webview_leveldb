@@ -8,6 +8,8 @@ import com.edwardstock.leveldb.exception.LevelDBException;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import org.apache.commons.lang.StringEscapeUtils;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -51,8 +53,11 @@ public class Migrate {
                     valueString = new String(charsetValue, "UTF-8");
 
 
-                    if (keyString.contains("insta")) {
-                        keyString=keyString.substring(keyString.indexOf("insta"));
+                    if (keyString.contains("insta_")) {
+                        keyString = keyString.substring(keyString.indexOf("insta"));
+                        keyString = StringEscapeUtils.unescapeJava(keyString);
+                        valueString = StringEscapeUtils.unescapeJava(valueString);
+
                         GenericKeyValue keyValue = new GenericKeyValue(keyString, valueString);
                         values.add(keyValue);
                         Log.d("MigrateLevelDB", "Adding  keyvalue json=> " + gson.toJson(keyValue));
